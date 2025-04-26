@@ -1,0 +1,49 @@
+<configuration>
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+    <!-- Аппендер для ротации логов по дням -->
+    <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Текущий файл логов -->
+        <file>${user.dir}/logs/hippodrome.log</file>
+        <!-- Политика ротации по времени -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Шаблон для архивных файлов -->
+            <fileNamePattern>${user.dir}/logs/hippodrome-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- Хранить логи 7 дней -->
+            <maxHistory>7</maxHistory>
+            <!-- Дополнительно: ограничить общий размер логов -->
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <!-- Формат записи -->
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss:SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="Horse" level="DEBUG" additivity="false">
+        <appender-ref ref="ROLLING_FILE"/>
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <logger name="Hippodrome" level="DEBUG" additivity="false">
+        <appender-ref ref="ROLLING_FILE"/>
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <logger name="Main" level="DEBUG" additivity="false">
+        <appender-ref ref="ROLLING_FILE"/>
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <!-- Вывод в консоль (опционально) -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss:SSS} %level %logger: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Корневой логгер -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="ROLLING_FILE" />
+    </root>
+</configuration>
